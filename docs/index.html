@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alura - Salud y Bienestar</title>
+    <meta name="description" content="Mejora tu salud, hábitos y energía diaria con consejos prácticos y motivacionales." />
+    <!-- ADDED: ?plugins=typography to enable the prose classes -->
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: '#f0fdf4',
+                100: '#dcfce7',
+                500: '#22c55e',
+                600: '#16a34a',
+                700: '#15803d',
+                900: '#14532d',
+              },
+              accent: {
+                500: '#eab308', // Yellow for CTAs
+                600: '#ca8a04',
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'system-ui', 'sans-serif'],
+              serif: ['Merriweather', 'serif'],
+            },
+            typography: (theme) => ({
+              DEFAULT: {
+                css: {
+                  color: theme('colors.gray.700'),
+                  a: {
+                    color: theme('colors.brand.600'),
+                    '&:hover': {
+                      color: theme('colors.brand.700'),
+                    },
+                  },
+                },
+              },
+            }),
+            keyframes: {
+              'fade-in-up': {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              'fade-in': {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              }
+            },
+            animation: {
+              'fade-in-up': 'fade-in-up 0.4s ease-out forwards',
+              'fade-in': 'fade-in 0.3s ease-out forwards',
+            }
+          }
+        }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+      body { font-family: 'Inter', sans-serif; }
+      h1, h2, h3, h4, h5, h6 { font-family: 'Merriweather', serif; }
+      
+      /* Custom utility for the Lead paragraph in articles */
+      .lead {
+        font-size: 1.25rem;
+        line-height: 1.75;
+        color: #374151; /* gray-700 */
+        margin-bottom: 2rem;
+        font-weight: 500;
+      }
+    </style>
+
+<link rel="stylesheet" href="/index.css">
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.3.1",
+    "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+    "react/": "https://esm.sh/react@18.3.1/",
+    "lucide-react": "https://esm.sh/lucide-react@0.344.0?deps=react@18.3.1",
+    "react-router-dom": "https://esm.sh/react-router-dom@6.22.3?deps=react@18.3.1,react-dom@18.3.1",
+    "react-helmet-async": "https://esm.sh/react-helmet-async@2.0.4?deps=react@18.3.1,react-dom@18.3.1",
+    "react-dom/": "https://esm.sh/react-dom@18.3.1/"
+  }
+}
+</script>
+  <script type="module" crossorigin src="/Alura-Page/assets/index-PK1lk0cN.js"></script>
+</head>
+  <body>
+    <div id="root"></div>
+</body>
+</html>
