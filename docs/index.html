@@ -94,8 +94,31 @@
 </script>
   <script type="module" crossorigin src="./assets/index-k1M7LxoG.js"></script>
 </head>
+<!-- MailerLite Universal -->
+<script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '2088407');
+</script>
+<!-- End MailerLite Universal -->
+  <script>
+  // Este pequeño asistente detecta cuando haces clic en tu botón
+  document.addEventListener('click', function(e) {
+    // Si el clic fue en algo que dice "Recibir guía gratuita"
+    if (e.target && e.target.innerText && e.target.innerText.includes('Recibir guía gratuita')) {
+      // Le pedimos a MailerLite que muestre el formulario
+      if (typeof ml !== 'undefined') {
+        ml('show', '972M5J', true);
+      }
+    }
+  });
+</script>
   <body>
-    <div id="root"></div>
-
+<div id="root"></div>
+<div id="mailerlite-form-container" style="display: none;">
+    <div class="ml-embedded" data-form="972M5J"></div>
+</div>
 </body>
 </html>
