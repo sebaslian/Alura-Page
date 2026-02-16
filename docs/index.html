@@ -21,7 +21,7 @@
                 900: '#14532d',
               },
               accent: {
-                500: '#eab308', // Yellow for CTAs
+                500: '#eab308',
                 600: '#ca8a04',
               }
             },
@@ -29,19 +29,6 @@
               sans: ['Inter', 'system-ui', 'sans-serif'],
               serif: ['Merriweather', 'serif'],
             },
-            typography: (theme) => ({
-              DEFAULT: {
-                css: {
-                  color: theme('colors.gray.700'),
-                  a: {
-                    color: theme('colors.brand.600'),
-                    '&:hover': {
-                      color: theme('colors.brand.700'),
-                    },
-                  },
-                },
-              },
-            }),
             keyframes: {
               'fade-in-up': {
                 '0%': { opacity: '0', transform: 'translateY(20px)' },
@@ -64,57 +51,39 @@
     <style>
       body { font-family: 'Inter', sans-serif; }
       h1, h2, h3, h4, h5, h6 { font-family: 'Merriweather', serif; }
-      
-      /* Custom utility for the Lead paragraph in articles */
       .lead {
         font-size: 1.25rem;
         line-height: 1.75;
-        color: #374151; /* gray-700 */
+        color: #374151;
         margin-bottom: 2rem;
         font-weight: 500;
       }
     </style>
-
-<link rel="stylesheet" href="./assets/index.css">
-
-
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@18.3.1",
-    "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
-    "react/": "https://esm.sh/react@18.3.1/",
-    "lucide-react": "https://esm.sh/lucide-react@0.344.0?deps=react@18.3.1",
-    "react-router-dom": "https://esm.sh/react-router-dom@6.22.3?deps=react@18.3.1,react-dom@18.3.1",
-    "react-helmet-async": "https://esm.sh/react-helmet-async@2.0.4?deps=react@18.3.1,react-dom@18.3.1",
-    "react-dom/": "https://esm.sh/react-dom@18.3.1/"
-  }
-}
-</script>
-  <script type="module" crossorigin src="./assets/index-k1M7LxoG.js"></script>
-</head>
-
-<body>
-  <div id="root"></div>
-
-  <script>
-    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
-    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
-    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
-    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-    ml('account', '2088407');
-  </script>
-  <script>
-    document.addEventListener('click', function(e) {
-      // Detectamos el clic en tu botón de "Recibir guía gratuita"
-      if (e.target && e.target.innerText && e.target.innerText.includes('Recibir guía gratuita')) {
-        
-        // Ejecutamos el código con el ID correcto de tu Imagen 1
-        if (typeof ml !== 'undefined') {
-          ml('show', 'NXKb6Y', true);
-        }
+    <link rel="stylesheet" href="./assets/index.css">
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.3.1",
+        "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+        "react/": "https://esm.sh/react@18.3.1/",
+        "lucide-react": "https://esm.sh/lucide-react@0.344.0?deps=react@18.3.1",
+        "react-router-dom": "https://esm.sh/react-router-dom@6.22.3?deps=react@18.3.1,react-dom@18.3.1",
+        "react-helmet-async": "https://esm.sh/react-helmet-async@2.0.4?deps=react@18.3.1,react-dom@18.3.1",
+        "react-dom/": "https://esm.sh/react-dom@18.3.1/"
       }
-    });
-  </script>
-</body>
+    }
+    </script>
+    <script type="module" crossorigin src="./assets/index-k1M7LxoG.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script>
+        (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+        .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+        n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+        (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+        ml('account', '2088407');
+    </script>
+  </body>
 </html>
