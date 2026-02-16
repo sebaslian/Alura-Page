@@ -21,28 +21,54 @@ export const NewsletterModal: React.FC = () => {
     }
   }, [isModalOpen]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     setStatus('loading');
 
-    // CONEXIÓN CON TU CUENTA 2088407 Y FORMULARIO uHKCPJ
-    if (window.ml) {
-      window.ml('send', 'uHKCPJ', { email: email }, (result: any) => {
-        console.log("Registro en MailerLite completado:", result);
+    // MÉTODO DEFINITIVO: Envío mediante un formulario oculto para evitar bloqueos de React/CORS
+    try {
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = 'https://assets.mailerlite.com/jsonp/2088407/forms/uHKCPJ/subscribe';
+      form.target = 'hidden_iframe'; // Evita que la página se recargue
+
+      const emailInput = document.createElement('input');
+      emailInput.type = 'hidden';
+      emailInput.name = 'fields[email]';
+      emailInput.value = email;
+      
+      const submitInput = document.createElement('input');
+      submitInput.type = 'hidden';
+      submitInput.name = 'ml-submit';
+      submitInput.value = '1';
+
+      form.appendChild(emailInput);
+      form.appendChild(submitInput);
+      document.body.appendChild(form);
+      
+      // Creamos un iframe invisible para recibir la respuesta
+      let iframe = document.getElementById('hidden_iframe') as HTMLIFrameElement;
+      if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.id = 'hidden_iframe';
+        iframe.name = 'hidden_iframe';
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+      }
+
+      form.submit();
+      
+      // Simulamos el éxito tras el envío
+      setTimeout(() => {
         setStatus('success');
         setEmail('');
-      });
-    } else {
-      // Fallback por si el script falla
-      const formData = new FormData();
-      formData.append('fields[email]', email);
-      formData.append('ml-submit', '1');
-      fetch('https://assets.mailerlite.com/jsonp/2088407/forms/uHKCPJ/subscribe', {
-        method: 'POST',
-        body: formData,
-        mode: 'no-cors'
-      }).then(() => setStatus('success'));
+        document.body.removeChild(form);
+      }, 1000);
+
+    } catch (error) {
+      console.error("Error en el envío:", error);
+      setStatus('idle');
     }
   };
 
@@ -53,12 +79,10 @@ export const NewsletterModal: React.FC = () => {
       <div className="absolute inset-0 bg-gray-900/70 backdrop-blur-sm" onClick={closeModal}></div>
 
       <div ref={modalRef} className="relative bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up">
-        {/* BOTÓN CERRAR */}
         <button onClick={closeModal} className="absolute top-3 right-3 z-20 p-2 text-gray-400 hover:text-gray-900">
           <X size={20} />
         </button>
 
-        {/* CABECERA */}
         <div className="bg-brand-50 p-8 text-center relative overflow-hidden">
            <div className="relative z-10">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/90 rounded-full shadow-sm text-xs font-bold text-brand-700 mb-4 uppercase">
@@ -73,7 +97,6 @@ export const NewsletterModal: React.FC = () => {
            </div>
         </div>
 
-        {/* CUERPO DEL MODAL */}
         <div className="p-8 bg-white">
             {status === 'success' ? (
               <div className="text-center py-6 animate-fade-in">
@@ -94,12 +117,10 @@ export const NewsletterModal: React.FC = () => {
                     {UI_TEXT.modal_desc[language]}
                 </p>
 
-                {/* FORMULARIO */}
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input
                         ref={inputRef}
                         type="email"
-                        name="fields[email]" // Nombre obligatorio para MailerLite
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -126,7 +147,6 @@ export const NewsletterModal: React.FC = () => {
   );
 };
 
-// EXTREMADAMENTE IMPORTANTE PARA QUE REACT RECONOZCA EL SCRIPT DE MAILERLITE
 declare global {
   interface Window {
     ml: any;
