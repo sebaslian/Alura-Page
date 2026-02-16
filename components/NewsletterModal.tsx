@@ -13,119 +13,111 @@ export const NewsletterModal: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeModal();
-    };
-
     if (isModalOpen) {
       document.body.style.overflow = 'hidden';
-      window.addEventListener('keydown', handleEsc);
       setTimeout(() => inputRef.current?.focus(), 100);
     } else {
       document.body.style.overflow = 'unset';
     }
+  }, [isModalOpen]);
 
-    return () => {
-      document.body.style.overflow = 'unset';
-      window.removeEventListener('keydown', handleEsc);
-    };
-  }, [isModalOpen, closeModal]);
-
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-      closeModal();
-    }
-  };
-
-  // ESTA FUNCIÓN CONECTA CON TU CUENTA 2088407
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email) return;
     setStatus('loading');
 
-    const formData = new FormData();
-    formData.append('fields[email]', email);
-    formData.append('ml-submit', '1');
-
-    try {
-      // Usamos el ID de tu formulario uHKCPJ
-      await fetch('https://assets.mailerlite.com/jsonp/2088407/forms/uHKCPJ/subscribe', {
+    // CONEXIÓN CON TU CUENTA 2088407 Y FORMULARIO uHKCPJ
+    if (window.ml) {
+      window.ml('send', 'uHKCPJ', { email: email }, (result: any) => {
+        console.log("Registro en MailerLite completado:", result);
+        setStatus('success');
+        setEmail('');
+      });
+    } else {
+      // Fallback por si el script falla
+      const formData = new FormData();
+      formData.append('fields[email]', email);
+      formData.append('ml-submit', '1');
+      fetch('https://assets.mailerlite.com/jsonp/2088407/forms/uHKCPJ/subscribe', {
         method: 'POST',
         body: formData,
-        mode: 'no-cors', // Evita problemas de seguridad del navegador
-      });
-      
-      setStatus('success');
-      setEmail('');
-    } catch (error) {
-      console.error("Error al suscribirse:", error);
-      setStatus('idle');
+        mode: 'no-cors'
+      }).then(() => setStatus('success'));
     }
   };
 
   if (!isModalOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6" aria-modal="true" role="dialog">
-      <div className="absolute inset-0 bg-gray-900/70 backdrop-blur-sm animate-fade-in transition-opacity" onClick={handleBackdropClick}></div>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-gray-900/70 backdrop-blur-sm" onClick={closeModal}></div>
 
-      <div ref={modalRef} className="relative bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up flex flex-col mx-auto" style={{ maxHeight: '90vh', overflowY: 'auto' }}>
-        <button onClick={closeModal} className="absolute top-3 right-3 z-20 p-2 bg-white/80 hover:bg-gray-100 rounded-full text-gray-400 hover:text-gray-900 transition-all shadow-sm">
+      <div ref={modalRef} className="relative bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up">
+        {/* BOTÓN CERRAR */}
+        <button onClick={closeModal} className="absolute top-3 right-3 z-20 p-2 text-gray-400 hover:text-gray-900">
           <X size={20} />
         </button>
 
-        <div className="bg-brand-50 p-6 sm:p-8 text-center relative overflow-hidden shrink-0">
-           <div className="absolute -top-10 -left-10 w-32 h-32 bg-yellow-200 rounded-full blur-2xl opacity-40"></div>
-           <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-brand-300 rounded-full blur-2xl opacity-40"></div>
+        {/* CABECERA */}
+        <div className="bg-brand-50 p-8 text-center relative overflow-hidden">
            <div className="relative z-10">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/90 backdrop-blur rounded-full shadow-sm text-[10px] md:text-xs font-bold text-brand-700 uppercase tracking-widest mb-4">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/90 rounded-full shadow-sm text-xs font-bold text-brand-700 mb-4 uppercase">
                  <Zap size={12} fill="currentColor" /> PDF Guide
               </div>
-              <h3 className="text-2xl sm:text-3xl font-serif font-bold text-gray-900 leading-tight mb-2">{UI_TEXT.modal_title[language]}</h3>
-              <p className="text-brand-800 font-medium text-sm sm:text-base">{UI_TEXT.modal_subtitle[language]}</p>
+              <h3 className="text-2xl font-serif font-bold text-gray-900 leading-tight mb-2">
+                {UI_TEXT.modal_title[language]}
+              </h3>
+              <p className="text-brand-800 font-medium">
+                {UI_TEXT.modal_subtitle[language]}
+              </p>
            </div>
         </div>
 
-        <div className="p-6 sm:p-8 bg-white flex flex-col flex-grow justify-center">
+        {/* CUERPO DEL MODAL */}
+        <div className="p-8 bg-white">
             {status === 'success' ? (
               <div className="text-center py-6 animate-fade-in">
                 <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
                   <CheckCircle size={32} />
                 </div>
-                <h4 className="text-xl font-bold text-gray-900 mb-2">¡Suscripción exitosa!</h4>
-                <p className="text-gray-500 mb-6 text-sm">Revisa tu bandeja de entrada para confirmar y descargar tu PDF.</p>
-                <button onClick={closeModal} className="px-6 py-2 rounded-lg bg-gray-100 text-gray-600 font-bold hover:bg-gray-200 transition-colors">Cerrar</button>
+                <h4 className="text-xl font-bold text-gray-900 mb-2">¡Casi está listo!</h4>
+                <p className="text-gray-500 mb-6 text-sm">
+                  Te hemos enviado un correo. **Confirma tu suscripción** para recibir la guía.
+                </p>
+                <button onClick={closeModal} className="px-6 py-2 rounded-lg bg-brand-600 text-white font-bold hover:bg-brand-700 transition-colors">
+                  Entendido
+                </button>
               </div>
             ) : (
               <>
-                <p className="text-gray-600 mb-6 text-center leading-relaxed text-sm sm:text-base">{UI_TEXT.modal_desc[language]}</p>
-                <ul className="space-y-3 mb-8 bg-gray-50 p-4 rounded-xl border border-gray-100">
-                    {[UI_TEXT.modal_benefit_1, UI_TEXT.modal_benefit_2, UI_TEXT.modal_benefit_3].map((benefit, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
-                        <CheckCircle size={16} className="text-brand-500 flex-shrink-0 mt-0.5" />
-                        <span className="leading-snug">{benefit[language]}</span>
-                    </li>
-                    ))}
-                </ul>
+                <p className="text-gray-600 mb-6 text-center text-sm sm:text-base">
+                    {UI_TEXT.modal_desc[language]}
+                </p>
 
+                {/* FORMULARIO */}
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input
                         ref={inputRef}
                         type="email"
+                        name="fields[email]" // Nombre obligatorio para MailerLite
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder={UI_TEXT.newsletter_placeholder[language]}
-                        className="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none transition-all text-gray-900"
+                        className="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none transition-all text-gray-900 placeholder-gray-400"
                     />
                     <button
                         type="submit"
                         disabled={status === 'loading'}
-                        className="w-full bg-brand-600 text-white font-bold py-4 rounded-xl hover:bg-brand-700 transition-all flex items-center justify-center disabled:opacity-50"
+                        className="w-full bg-brand-600 text-white font-bold py-4 rounded-xl hover:bg-brand-700 hover:shadow-lg transition-all flex items-center justify-center disabled:opacity-50"
                     >
-                        {status === 'loading' ? 'Enviando...' : UI_TEXT.modal_cta[language]}
+                        {status === 'loading' ? 'Registrando...' : UI_TEXT.modal_cta[language]}
                     </button>
                 </form>
-                <p className="text-[10px] sm:text-xs text-center text-gray-400 mt-4">🔒 Tus datos están seguros.</p>
+
+                <p className="text-[10px] sm:text-xs text-center text-gray-400 mt-4">
+                    🔒 {language === 'es' ? "Tus datos están seguros. Date de baja cuando quieras." : "Your data is safe. Unsubscribe anytime."}
+                </p>
               </>
             )}
         </div>
@@ -133,3 +125,10 @@ export const NewsletterModal: React.FC = () => {
     </div>
   );
 };
+
+// EXTREMADAMENTE IMPORTANTE PARA QUE REACT RECONOZCA EL SCRIPT DE MAILERLITE
+declare global {
+  interface Window {
+    ml: any;
+  }
+}
