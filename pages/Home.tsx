@@ -66,13 +66,8 @@ export const Home: React.FC = () => {
   const { language } = useLanguage();
   const { openModal } = useModal();
 
-  // Logic for "Trending Articles" (Manual curation or specific criteria)
   const trendingArticles = MOCK_ARTICLES.slice(0, 3);
   
-  // Logic for "Latest Articles" (Date based)
-  // 1. Filter out trending articles to avoid duplication
-  // 2. Sort by date descending
-  // 3. Take next 3
   const trendingIds = new Set(trendingArticles.map(a => a.id));
   const latestArticles = MOCK_ARTICLES
     .filter(a => !trendingIds.has(a.id))
@@ -83,16 +78,13 @@ export const Home: React.FC = () => {
     <>
       <SEOHead />
       
-      {/* Hero Section */}
       <section className="relative bg-white overflow-hidden">
-        {/* Background blobs */}
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-[600px] h-[600px] bg-brand-50 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-pulse"></div>
         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-[400px] h-[400px] bg-yellow-50 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-20 md:pt-24 md:pb-32 relative z-10">
           <div className="flex flex-col items-center text-center">
             
-            {/* Content (Centered) */}
             <div className="max-w-3xl mx-auto">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 border border-brand-100 text-brand-700 text-xs font-bold uppercase tracking-wider mb-6">
                 <span className="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
@@ -108,27 +100,28 @@ export const Home: React.FC = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                {/* CTA 1: Navigation to All Articles */}
                 <Link 
                   to="/category/all"
                   className="px-8 py-4 bg-gray-900 text-white rounded-xl font-bold text-lg shadow-xl shadow-gray-200 hover:bg-black hover:-translate-y-1 transition-all flex items-center justify-center gap-2"
-                  aria-label={language === 'es' ? 'Explorar todos los artículos' : 'Explore all articles'}
                 >
                   {UI_TEXT.cta_explore[language]}
                   <ArrowRight size={20} />
                 </Link>
 
-                {/* CTA 2: Open Newsletter Modal */}
+                {/* BOTÓN CORREGIDO AQUÍ ABAJO */}
                 <button 
-                  onClick={openModal}
-                  className="px-8 py-4 bg-white text-gray-700 border border-gray-200 rounded-xl font-bold text-lg hover:bg-gray-50 hover:border-gray-300 transition-all"
-                  aria-label={language === 'es' ? 'Obtener guía gratuita' : 'Get free guide'}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if ((window as any).ml) {
+                      (window as any).ml('show', 'uHKCPJ', true);
+                    }
+                  }}
+                  className="ml-onclick-form px-8 py-4 bg-white text-gray-700 border border-gray-200 rounded-xl font-bold text-lg hover:bg-gray-50 hover:border-gray-300 transition-all"
                 >
                   {UI_TEXT.cta_guide[language]}
                 </button>
               </div>
 
-              {/* Trust Signals */}
               <div className="mt-10 flex items-center justify-center gap-6 text-sm text-gray-500">
                 <div className="flex -space-x-3">
                    {TRUST_AVATARS.map((avatar, i) => (
@@ -152,14 +145,10 @@ export const Home: React.FC = () => {
                 </div>
               </div>
             </div>
-
-            {/* Visual (Right) Removed as requested */}
-
           </div>
         </div>
       </section>
 
-      {/* Visual Categories Grid */}
       <section className="py-12 bg-gray-50/50 border-y border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
@@ -185,12 +174,10 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* AdSense Slot 1 - High Visibility */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AdPlaceholder format="horizontal" />
       </div>
 
-      {/* SECTION: TRENDING ARTICLES (Previously Featured) */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-12">
@@ -198,7 +185,6 @@ export const Home: React.FC = () => {
               <h2 className="text-3xl font-serif font-bold text-gray-900 tracking-tight">{UI_TEXT.section_trending[language]}</h2>
               <p className="text-gray-500 mt-2 text-sm md:text-base">{UI_TEXT.section_trending_sub[language]}</p>
             </div>
-            {/* View All hidden on mobile here to save space */}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -209,7 +195,6 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* SECTION: LATEST ARTICLES (New Section) */}
       <section className="py-16 bg-gray-50 border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-12">
@@ -236,7 +221,6 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* AdSense Slot 2 */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 mt-8">
         <AdPlaceholder format="horizontal" />
       </div>
