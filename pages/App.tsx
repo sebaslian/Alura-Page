@@ -10,7 +10,6 @@ import { Contact } from './pages/Contact';
 import { Legal } from './pages/Legal';
 import { Language } from './types';
 import { ModalProvider } from './contexts/ModalContext';
-import { NewsletterModal } from './components/NewsletterModal';
 
 // Language Context
 interface LanguageContextType {
@@ -43,7 +42,6 @@ const App: React.FC = () => {
         <ModalProvider>
           <Router>
             <ScrollToTop />
-            <NewsletterModal />
             <Layout>
               <Routes>
                 <Route path="/" element={<Home />} />
