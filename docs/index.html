@@ -104,21 +104,22 @@
 </script>
 <!-- End MailerLite Universal -->
   <script>
-  // Este pequeño asistente detecta cuando haces clic en tu botón
   document.addEventListener('click', function(e) {
-    // Si el clic fue en algo que dice "Recibir guía gratuita"
+    // 1. Detectamos si pulsas el botón "Recibir guía gratuita"
     if (e.target && e.target.innerText && e.target.innerText.includes('Recibir guía gratuita')) {
-      // Le pedimos a MailerLite que muestre el formulario
-      if (typeof ml !== 'undefined') {
-        ml('show', '972M5J', true);
-      }
+      
+      // 2. Esperamos un instante a que se abra tu recuadro blanco
+      setTimeout(() => {
+        // 3. Buscamos el formulario de la plantilla (el que tiene el botón "¡Quiero la Guía!")
+        const formViejo = document.querySelector('form');
+        
+        if (formViejo) {
+          // 4. Esta línea es la que "borra" lo de antes y pone MailerLite automáticamente
+          formViejo.innerHTML = '<div class="ml-embedded" data-form="972M5J"></div>';
+        }
+      }, 100); 
     }
   });
 </script>
-  <body>
-<div id="root"></div>
-<div id="mailerlite-form-container" style="display: none;">
-    <div class="ml-embedded" data-form="972M5J"></div>
-</div>
 </body>
 </html>
