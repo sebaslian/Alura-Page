@@ -6,7 +6,6 @@
     <title>Alura | Salud, Bienestar y Hábitos Saludables</title>
     <link rel="icon" type="image/png" href="images/about/favicon.png">
     <meta name="description" content="Transforma tu vida en Alura. Consejos prácticos de salud, nutrición consciente y guías de hábitos saludables para mejorar tu energía diaria sin tecnicismos.">
-    <!-- ADDED: ?plugins=typography to enable the prose classes -->
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <script>
       tailwind.config = {
@@ -94,32 +93,28 @@
 </script>
   <script type="module" crossorigin src="./assets/index-k1M7LxoG.js"></script>
 </head>
-<!-- MailerLite Universal -->
-<script>
+
+<body>
+  <div id="root"></div>
+
+  <script>
     (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
     .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
     n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
     (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
     ml('account', '2088407');
-</script>
-<!-- End MailerLite Universal -->
-<script>
-  document.addEventListener('click', function(e) {
-    if (e.target && e.target.innerText && e.target.innerText.includes('Recibir guía gratuita')) {
-      setTimeout(() => {
-        const formViejo = document.querySelector('form');
-        if (formViejo) {
-          // Sustituimos y forzamos la carga de MailerLite
-          formViejo.innerHTML = '<div class="ml-embedded" data-form="972M5J"></div>';
-          if (typeof ml !== 'undefined') {
-            ml('show', '972M5J', true);
-          }
+  </script>
+  <script>
+    document.addEventListener('click', function(e) {
+      // Detectamos el clic en tu botón de "Recibir guía gratuita"
+      if (e.target && e.target.innerText && e.target.innerText.includes('Recibir guía gratuita')) {
+        
+        // Ejecutamos el código con el ID correcto de tu Imagen 1
+        if (typeof ml !== 'undefined') {
+          ml('show', 'NXKb6Y', true);
         }
-      }, 200); // Aumentamos un poco el tiempo para que el modal abra del todo
-    }
-  });
-</script>
-<body>
-  <div id="root"></div>
+      }
+    });
+  </script>
 </body>
 </html>
