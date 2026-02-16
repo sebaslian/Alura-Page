@@ -11,7 +11,16 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined);
 export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = () => setIsModalOpen(true);
+  const openModal = () => {
+    // 1. Intentamos abrir el cuadro oficial de MailerLite
+    if ((window as any).ml) {
+      (window as any).ml('show', 'uHKCPJ', true);
+    } else {
+      // 2. Si por algún motivo MailerLite no carga, abrimos el de React como respaldo
+      setIsModalOpen(true);
+    }
+  };
+
   const closeModal = () => setIsModalOpen(false);
 
   return (
@@ -27,4 +36,4 @@ export const useModal = () => {
     throw new Error('useModal must be used within a ModalProvider');
   }
   return context;
-};
+};  
