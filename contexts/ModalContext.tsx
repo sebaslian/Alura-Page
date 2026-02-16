@@ -12,12 +12,11 @@ export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
-    // 1. Intentamos abrir el cuadro oficial de MailerLite
+    console.log("Intentando abrir MailerLite...");
     if ((window as any).ml) {
       (window as any).ml('show', 'uHKCPJ', true);
     } else {
-      // 2. Si por algún motivo MailerLite no carga, abrimos el de React como respaldo
-      setIsModalOpen(true);
+      console.error("MailerLite no cargó. ¿Está el script en el index.html?");
     }
   };
 
@@ -36,4 +35,4 @@ export const useModal = () => {
     throw new Error('useModal must be used within a ModalProvider');
   }
   return context;
-};  
+};
